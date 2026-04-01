@@ -1,47 +1,53 @@
 <template>
-  <div :class="['font-inter min-h-screen text-slate-800 overflow-x-hidden transition-colors duration-500', isDark ? 'bg-slate-900 text-slate-100' : 'bg-white']">
+  <div :class="['min-h-screen overflow-x-hidden transition-colors duration-500', isDark ? 'bg-[#0a0f1e] text-slate-100' : 'bg-[#f8faff] text-slate-800']">
+
+    <!-- CLUSTER PROGRESS (full-screen overlay) -->
+    <ClusterProgress v-if="showCluster" :isDark="isDark" @close="showCluster = false" />
     
     <!-- 1. STICKY NAVIGATION -->
     <nav 
       :class="[
         'fixed w-full z-50 transition-all duration-500',
-        isScrolled ? 'bg-white/98 backdrop-blur-md shadow-2xl py-3 sm:py-4' : 'bg-gradient-to-b from-black/70 via-black/40 to-transparent py-4 sm:py-6'
+        isScrolled 
+          ? (isDark ? 'bg-[#0a0f1e]/95 border-b border-blue-900/40' : 'bg-white/95 border-b border-slate-200/60') + ' backdrop-blur-2xl shadow-2xl shadow-black/10 py-3 sm:py-4' 
+          : 'bg-gradient-to-b from-black/60 to-transparent py-5 sm:py-7'
       ]"
     >
       <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 flex justify-between items-center">
         <!-- Logo -->
-        <a href="#" :class="['text-xl sm:text-2xl font-black tracking-tight flex items-center gap-1.5 sm:gap-2', isScrolled ? 'text-slate-900' : 'text-white']">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 sm:h-8 w-6 sm:w-8 text-blue-600" viewBox="0 0 20 20" fill="currentColor">
-            <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
-          </svg>
-          <span class="hidden xs:inline">Rumah<span class="text-blue-600">Impian</span></span>
-          <span class="xs:hidden text-blue-600">RI</span>
+        <a href="#" class="flex items-center gap-2 group transition-transform duration-300 hover:scale-[1.02]">
+          <div class="relative flex items-center justify-center h-8 w-8 sm:h-10 sm:w-10 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 shadow-lg shadow-blue-500/30">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-6 sm:w-6 text-white" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M11.47 3.84a1 1 0 011.06 0l8.99 5.83a1 1 0 01.37 1.35l-.01.02a1 1 0 01-1.35.37L20 10.95V20a2 2 0 01-2 2h-4a1 1 0 01-1-1v-5h-2v5a1 1 0 01-1 1H6a2 2 0 01-2-2v-9.05l-.53.46a1 1 0 01-1.35-.37l-.01-.02a1 1 0 01.37-1.35l8.99-5.83z" />
+            </svg>
+          </div>
+          <span :class="['text-xl sm:text-2xl font-black tracking-tight', isScrolled ? (isDark ? 'text-white' : 'text-slate-900') : 'text-white']">
+            Griya<span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-500">Ketapang</span>
+          </span>
         </a>
 
         <!-- Desktop Links -->
-        <div class="hidden lg:flex space-x-4 xl:space-x-8 items-center">
-          <a href="#jual" :class="['text-sm xl:text-base font-semibold hover:text-blue-500 transition-colors', isScrolled ? 'text-slate-700' : 'text-white/90']">Beli</a>
-          <a href="#sewa" :class="['text-sm xl:text-base font-semibold hover:text-blue-500 transition-colors', isScrolled ? 'text-slate-700' : 'text-white/90']">Sewa</a>
-          <a href="#baru" :class="['text-sm xl:text-base font-semibold hover:text-blue-500 transition-colors', isScrolled ? 'text-slate-700' : 'text-white/90']">Properti Baru</a>
+        <div class="hidden lg:flex items-center gap-8 xl:gap-10">
+          <a href="#jual" :class="['text-sm font-semibold tracking-wide hover:text-blue-500 transition-colors', isScrolled ? (isDark ? 'text-slate-300' : 'text-slate-600') : 'text-white/90']">Beli</a>
+          <a href="#sewa" :class="['text-sm font-semibold tracking-wide hover:text-blue-500 transition-colors', isScrolled ? (isDark ? 'text-slate-300' : 'text-slate-600') : 'text-white/90']">Sewa</a>
+          <a href="#baru" :class="['text-sm font-semibold tracking-wide hover:text-blue-500 transition-colors', isScrolled ? (isDark ? 'text-slate-300' : 'text-slate-600') : 'text-white/90']">Proyek Baru</a>
+          <button @click="showCluster = true" :class="['text-sm font-semibold tracking-wide hover:text-blue-500 transition-colors flex items-center gap-1.5', isScrolled ? (isDark ? 'text-slate-300' : 'text-slate-600') : 'text-white/90']">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/></svg>
+            Progress Unit
+          </button>
           
           <!-- Dark Mode Toggle -->
-          <button @click="toggleDarkMode" :class="['group p-2.5 rounded-xl transition-all duration-300', isDark ? 'bg-gradient-to-br from-slate-700 to-slate-800 text-amber-300 hover:from-slate-600 hover:to-slate-700 shadow-lg shadow-slate-900/50' : isScrolled ? 'text-slate-700 hover:bg-slate-100/80' : 'text-white hover:bg-white/10']" title="Toggle Dark Mode">
-            <!-- Sun Icon (Light Mode) -->
+          <button @click="toggleDarkMode" :class="['group p-2.5 rounded-xl transition-all duration-300', isDark ? 'bg-slate-800 text-amber-300 hover:bg-slate-700 shadow-inner' : isScrolled ? 'text-slate-600 hover:bg-slate-100' : 'text-white/80 hover:bg-white/10']" title="Toggle Dark Mode">
             <svg v-if="!isDark" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 group-hover:rotate-90 transition-transform duration-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-              <circle cx="12" cy="12" r="5" fill="currentColor" opacity="0.7"/>
-              <path stroke-linecap="round" stroke-linejoin="round" d="M12 1v6m0 6v6M4.22 4.22l4.24 4.24m5.08 0l4.24-4.24M4.22 19.78l4.24-4.24m5.08 0l4.24 4.24M1 12h6m6 0h6" />
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
             </svg>
-            <!-- Moon Icon (Dark Mode) -->
-            <svg v-else xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 group-hover:-rotate-12 transition-transform duration-500" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M21.64 13a1 1 0 0 0-1.05-.14 8 8 0 1 1 .12-11.5 1 1 0 1 0 1.07-1.63 10 10 0 1 0 .9 11.3 1 1 0 0 0-.94-1.26z" />
-              <!-- Star accents -->
-              <circle cx="8" cy="6" r="1.5" fill="currentColor" opacity="0.8"/>
-              <circle cx="14" cy="4" r="1" fill="currentColor" opacity="0.6"/>
+            <svg v-else xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 group-hover:-rotate-12 transition-transform duration-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
             </svg>
           </button>
           
-          <button :class="['px-5 xl:px-6 py-2 xl:py-2.5 rounded-full text-sm xl:text-base font-bold transition-all shadow-md hover:shadow-lg', 
-                           isScrolled ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white hover:shadow-xl hover:shadow-blue-600/50' : 'bg-white text-blue-600 hover:bg-slate-50']">
+          <button @click="showCluster = true" :class="['px-6 py-2.5 rounded-full text-sm font-bold transition-all tracking-wide',
+                           isScrolled ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-lg shadow-blue-600/30 hover:shadow-blue-600/50 hover:scale-105' : 'bg-white text-blue-700 hover:bg-slate-50 shadow-lg hover:scale-105']">
             Masuk
           </button>
         </div>
@@ -52,15 +58,11 @@
           <button @click="toggleDarkMode" :class="['group p-2.5 rounded-xl transition-all duration-300', isDark ? 'bg-gradient-to-br from-slate-700 to-slate-800 text-amber-300 hover:from-slate-600 hover:to-slate-700 shadow-lg shadow-slate-900/50' : isScrolled ? 'text-slate-700 hover:bg-slate-100/80' : 'text-white hover:bg-white/10']" title="Toggle Dark Mode">
             <!-- Sun Icon (Light Mode) -->
             <svg v-if="!isDark" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 group-hover:rotate-90 transition-transform duration-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-              <circle cx="12" cy="12" r="5" fill="currentColor" opacity="0.7"/>
-              <path stroke-linecap="round" stroke-linejoin="round" d="M12 1v6m0 6v6M4.22 4.22l4.24 4.24m5.08 0l4.24-4.24M4.22 19.78l4.24-4.24m5.08 0l4.24 4.24M1 12h6m6 0h6" />
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
             </svg>
             <!-- Moon Icon (Dark Mode) -->
-            <svg v-else xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 group-hover:-rotate-12 transition-transform duration-500" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M21.64 13a1 1 0 0 0-1.05-.14 8 8 0 1 1 .12-11.5 1 1 0 1 0 1.07-1.63 10 10 0 1 0 .9 11.3 1 1 0 0 0-.94-1.26z" />
-              <!-- Star accents -->
-              <circle cx="8" cy="6" r="1.5" fill="currentColor" opacity="0.8"/>
-              <circle cx="14" cy="4" r="1" fill="currentColor" opacity="0.6"/>
+            <svg v-else xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 group-hover:-rotate-12 transition-transform duration-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
             </svg>
           </button>
           
@@ -88,62 +90,71 @@
       <div class="absolute -bottom-64 right-0 w-96 h-96 bg-indigo-600/20 rounded-full filter blur-3xl -z-10"></div>
       
       <!-- Hero Content -->
-      <div class="relative z-20 w-full max-w-7xl px-4 sm:px-6 lg:px-8 flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-12">
+      <div class="relative z-20 w-full max-w-7xl px-4 sm:px-6 lg:px-8 flex flex-col lg:flex-row items-center justify-between gap-10 lg:gap-16">
         
         <!-- Left Content -->
-        <div class="w-full lg:w-3/5 space-y-6 sm:space-y-7 lg:space-y-8 text-center lg:text-left">
+        <div class="w-full lg:w-[55%] space-y-7 text-center lg:text-left">
           <!-- Badge -->
           <div class="flex justify-center lg:justify-start">
-            <span class="inline-block py-2 px-3 sm:px-4 rounded-full bg-gradient-to-r from-blue-500/40 to-indigo-500/40 text-blue-200 font-semibold text-xs sm:text-sm border border-blue-400/50 backdrop-blur-md hover:border-blue-400/70 transition-all duration-300">
-              🏆 Platform Properti Terpercaya #1 Indonesia
+            <span class="inline-flex items-center gap-2 py-2 px-4 rounded-full bg-white/10 text-white font-semibold text-xs sm:text-sm border border-white/20 backdrop-blur-md">
+              <span class="flex h-2 w-2 relative">
+                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-300 opacity-75"></span>
+                <span class="relative inline-flex rounded-full h-2 w-2 bg-amber-400"></span>
+              </span>
+              Perumahan Premium di Ketapang, Banyuwangi
             </span>
           </div>
 
           <!-- Heading -->
-          <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-black text-white leading-tight sm:leading-snug md:leading-snug lg:leading-tight drop-shadow-2xl">
-            Temukan <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-300 via-cyan-300 to-blue-400">Hunian</span><br class="hidden sm:block"/> <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 via-blue-300 to-indigo-300">Impian</span> Anda
+          <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-white leading-[1.1] tracking-tight drop-shadow-2xl">
+            Rumah <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-300 via-sky-300 to-cyan-300 anim-gradient">Idaman</span><br/>
+            di <span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-yellow-300 to-orange-300 anim-gradient">Ketapang</span>
           </h1>
 
-          <!-- Subtitle -->
-          <p class="text-sm sm:text-base md:text-lg lg:text-xl text-slate-200 max-w-2xl leading-relaxed font-light mx-auto lg:mx-0">
-            Jelajahi 150.000+ properti premium di 200+ kota dengan harga transparan dan proses KPR cepat. Investasi terbaik untuk masa depan keluarga Anda.
+          <!-- Subtitle SEO-friendly -->
+          <p class="text-base sm:text-lg text-slate-300 max-w-xl leading-relaxed font-light mx-auto lg:mx-0">
+            Perumahan <strong class="text-white font-semibold">Griya Ketapang</strong> — hunian modern dan nyaman di Ketapang, Banyuwangi, Jawa Timur. Kavling strategis, harga terjangkau, dan cicilan ringan. Wujudkan rumah impian keluarga Anda sekarang.
           </p>
           
-          <!-- Quick Stats -->
-          <div class="grid grid-cols-3 gap-3 sm:gap-4 lg:gap-6 pt-4 sm:pt-6">
-            <div class="group text-center lg:text-left">
-              <p class="text-2xl sm:text-3xl md:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 to-blue-300 group-hover:from-white group-hover:to-blue-200 transition-all">150k+</p>
-              <p class="text-xs sm:text-sm text-slate-300 font-medium mt-1">Properti</p>
-            </div>
-            <div class="h-8 sm:h-10 w-px bg-gradient-to-b from-slate-600 to-transparent mx-auto"></div>
-            <div class="group text-center lg:text-left">
-              <p class="text-2xl sm:text-3xl md:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 to-blue-300 group-hover:from-white group-hover:to-blue-200 transition-all">75k+</p>
-              <p class="text-xs sm:text-sm text-slate-300 font-medium mt-1">Pengguna Puas</p>
-            </div>
+          <!-- CTA Button -->
+          <div class="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start pt-2">
+            <button class="group bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold py-4 px-8 rounded-2xl shadow-2xl shadow-blue-700/50 hover:shadow-blue-500/60 transition-all flex items-center justify-center gap-2.5 text-sm sm:text-base hover:scale-105">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+              Cari Properti
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" /></svg>
+            </button>
+            <button class="px-8 py-4 rounded-2xl border-2 border-white/25 hover:border-white/50 bg-white/5 hover:bg-white/10 text-white font-semibold transition-all flex items-center justify-center gap-2.5 text-sm sm:text-base hover:scale-105">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+              Lihat Demo
+            </button>
           </div>
 
-          <!-- CTA Button -->
-          <div class="pt-4 sm:pt-6 flex flex-col sm:flex-row gap-3 justify-center lg:justify-start">
-            <button class="group bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 hover:from-blue-700 hover:via-indigo-700 hover:to-purple-700 text-white font-bold py-3 sm:py-4 px-6 sm:px-8 rounded-xl sm:rounded-full shadow-xl sm:shadow-2xl shadow-blue-600/40 hover:shadow-blue-600/60 transition-all flex items-center justify-center gap-2 text-sm sm:text-base w-full sm:w-auto">
-              Cari Properti
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
-              </svg>
-            </button>
-            <button class="px-6 sm:px-8 py-3 sm:py-4 rounded-xl sm:rounded-full border-2 border-white/30 hover:border-white/50 text-white font-bold transition-all flex items-center justify-center gap-2 text-sm sm:text-base w-full sm:w-auto">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-              Try Demo
-            </button>
+          <!-- Quick Stats -->
+          <div class="flex items-center gap-8 pt-4 justify-center lg:justify-start">
+            <div class="text-center lg:text-left">
+              <p class="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-300 to-cyan-300">43</p>
+              <p class="text-xs text-slate-400 font-medium mt-0.5 uppercase tracking-widest">Unit Kavling</p>
+            </div>
+            <div class="h-10 w-px bg-gradient-to-b from-transparent via-slate-500 to-transparent"></div>
+            <div class="text-center lg:text-left">
+              <p class="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-amber-300 to-orange-300">100%</p>
+              <p class="text-xs text-slate-400 font-medium mt-0.5 uppercase tracking-widest">Legalitas SHM</p>
+            </div>
+            <div class="h-10 w-px bg-gradient-to-b from-transparent via-slate-500 to-transparent"></div>
+            <div class="text-center lg:text-left">
+              <p class="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-emerald-300 to-cyan-300">KPR</p>
+              <p class="text-xs text-slate-400 font-medium mt-0.5 uppercase tracking-widest">Ready</p>
+            </div>
           </div>
         </div>
 
         <!-- Right: Search Box -->
         <div class="w-full lg:w-2/5 mt-8 lg:mt-0">
           <div class="bg-white/15 backdrop-blur-2xl border border-white/30 hover:border-white/50 p-6 sm:p-8 rounded-2xl sm:rounded-3xl shadow-2xl transition-all duration-300 group">
-            <h3 class="text-xl sm:text-2xl font-bold text-white mb-5 sm:mb-6">⚡ Mulai Pencarian Cepat</h3>
+            <h3 class="text-xl sm:text-2xl font-bold text-white mb-5 sm:mb-6 flex items-center gap-2">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clip-rule="evenodd"/></svg>
+              Mulai Pencarian Cepat
+            </h3>
             
             <!-- Tabs -->
             <div class="flex gap-2 mb-6 bg-white/10 p-1.5 rounded-full border border-white/20">
@@ -165,13 +176,19 @@
             <!-- Search Fields -->
             <div class="space-y-3 sm:space-y-4">
               <div>
-                <label class="block text-xs font-bold text-slate-200 mb-2 uppercase tracking-wide">📍 Lokasi</label>
+                <label class="flex items-center gap-1.5 text-xs font-bold text-slate-200 mb-2 uppercase tracking-wide">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                  Lokasi
+                </label>
                 <input type="text" placeholder="Jakarta, Bandung..." 
                        class="w-full bg-white/95 border border-slate-200 rounded-lg sm:rounded-xl px-3 sm:px-4 py-2.5 sm:py-3 text-slate-800 placeholder-slate-500 focus:ring-4 focus:ring-blue-500/30 focus:border-blue-500 transition-all font-medium text-sm sm:text-base">
               </div>
               
               <div>
-                <label class="block text-xs font-bold text-slate-200 mb-2 uppercase tracking-wide">🏠 Tipe Properti</label>
+                <label class="flex items-center gap-1.5 text-xs font-bold text-slate-200 mb-2 uppercase tracking-wide">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+                  Tipe Properti
+                </label>
                 <select class="w-full bg-white/95 border border-slate-200 rounded-lg sm:rounded-xl px-3 sm:px-4 py-2.5 sm:py-3 text-slate-800 focus:ring-4 focus:ring-blue-500/30 focus:border-blue-500 transition-all appearance-none font-medium cursor-pointer text-sm sm:text-base">
                   <option>Semua Tipe</option>
                   <option>Rumah Tapak</option>
@@ -196,7 +213,8 @@
               </div>
 
               <button class="w-full bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 hover:from-blue-700 hover:via-indigo-700 hover:to-purple-700 text-white font-bold py-3 sm:py-4 rounded-lg sm:rounded-xl shadow-lg shadow-indigo-600/40 hover:shadow-indigo-600/60 transition-all mt-4 sm:mt-6 flex justify-center items-center gap-2 group text-sm sm:text-base">
-                🔍 Cari Sekarang
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                Cari Sekarang
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
                 </svg>
@@ -216,31 +234,18 @@
     </header>
 
     <!-- 3. STATISTICS SECTION -->
-    <section class="relative py-12 sm:py-16 md:py-20 overflow-hidden transition-colors duration-500" :class="isDark ? 'bg-slate-800' : 'bg-white'">
-      <!-- Background Gradient -->
-      <div :class="['absolute inset-0', isDark ? 'bg-gradient-to-br from-slate-800 via-slate-700 to-slate-800' : 'bg-gradient-to-br from-blue-600 via-indigo-700 to-purple-800']"></div>
-      
-      <!-- Decorative elements -->
-      <div :class="['absolute top-1/2 -left-40 w-80 h-80 rounded-full filter blur-3xl', isDark ? 'bg-blue-600/10' : 'bg-blue-400/20']"></div>
-      <div :class="['absolute -bottom-40 -right-40 w-80 h-80 rounded-full filter blur-3xl', isDark ? 'bg-purple-600/10' : 'bg-purple-400/20']"></div>
+    <section class="relative py-14 sm:py-20 overflow-hidden" :class="isDark ? 'bg-[#0e1729]' : 'bg-gradient-to-br from-blue-700 via-indigo-700 to-blue-900'">
+      <!-- Decorative orbs -->
+      <div class="absolute top-0 left-1/4 w-72 h-72 bg-blue-500/20 rounded-full blur-3xl pointer-events-none"></div>
+      <div class="absolute bottom-0 right-1/4 w-72 h-72 bg-indigo-500/20 rounded-full blur-3xl pointer-events-none"></div>
       
       <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 lg:gap-8 text-center">
-          <div class="group space-y-2 sm:space-y-3 p-4 sm:p-6 rounded-lg sm:rounded-xl transition-all duration-300" :class="isDark ? 'bg-slate-700/50 hover:bg-slate-600/60' : 'bg-white/10 hover:bg-white/20 backdrop-blur-sm'">
-            <div class="text-3xl sm:text-4xl md:text-5xl font-black text-white group-hover:scale-110 transition-transform">150K+</div>
-            <p class="text-sm sm:text-base font-semibold" :class="isDark ? 'text-slate-300' : 'text-blue-100'">Properti</p>
-          </div>
-          <div class="group space-y-2 sm:space-y-3 p-4 sm:p-6 rounded-lg sm:rounded-xl transition-all duration-300" :class="isDark ? 'bg-slate-700/50 hover:bg-slate-600/60' : 'bg-white/10 hover:bg-white/20 backdrop-blur-sm'">
-            <div class="text-3xl sm:text-4xl md:text-5xl font-black text-white group-hover:scale-110 transition-transform">50K+</div>
-            <p class="text-sm sm:text-base font-semibold" :class="isDark ? 'text-slate-300' : 'text-blue-100'">Transaksi</p>
-          </div>
-          <div class="group space-y-2 sm:space-y-3 p-4 sm:p-6 rounded-lg sm:rounded-xl transition-all duration-300" :class="isDark ? 'bg-slate-700/50 hover:bg-slate-600/60' : 'bg-white/10 hover:bg-white/20 backdrop-blur-sm'">
-            <div class="text-3xl sm:text-4xl md:text-5xl font-black text-white group-hover:scale-110 transition-transform">200+</div>
-            <p class="text-sm sm:text-base font-semibold" :class="isDark ? 'text-slate-300' : 'text-blue-100'">Kota & Area</p>
-          </div>
-          <div class="group space-y-2 sm:space-y-3 p-4 sm:p-6 rounded-lg sm:rounded-xl transition-all duration-300" :class="isDark ? 'bg-slate-700/50 hover:bg-slate-600/60' : 'bg-white/10 hover:bg-white/20 backdrop-blur-sm'">
-            <div class="text-3xl sm:text-4xl md:text-5xl font-black text-white group-hover:scale-110 transition-transform">24/7</div>
-            <p class="text-sm sm:text-base font-semibold" :class="isDark ? 'text-slate-300' : 'text-blue-100'">Dukungan</p>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
+          <div v-for="(stat, i) in [{n:'150K+',l:'Properti',c:'from-blue-300 to-cyan-300'},{n:'50K+',l:'Transaksi',c:'from-emerald-300 to-teal-300'},{n:'200+',l:'Kota & Area',c:'from-amber-300 to-orange-300'},{n:'24/7',l:'Dukungan',c:'from-purple-300 to-pink-300'}]" :key="i"
+               class="group text-center p-6 sm:p-8 rounded-2xl border transition-all duration-300"
+               :class="isDark ? 'bg-white/5 border-white/10 hover:bg-white/10 hover:border-blue-400/40' : 'bg-white/10 border-white/20 hover:bg-white/20 backdrop-blur-sm'">
+            <div :class="['text-4xl sm:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r mb-2 group-hover:scale-110 transition-transform', stat.c]">{{ stat.n }}</div>
+            <p class="text-sm font-semibold text-white/70 uppercase tracking-widest">{{ stat.l }}</p>
           </div>
         </div>
       </div>
@@ -254,7 +259,10 @@
       <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <!-- Header -->
         <div class="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
-          <span :class="['inline-block py-1.5 px-3 sm:px-4 rounded-full font-semibold text-xs sm:text-sm mb-3 sm:mb-4', isDark ? 'bg-slate-700 text-blue-300' : 'bg-gradient-to-r from-blue-100 to-indigo-100 text-blue-700']">🏡 PILIHAN TERBAIK</span>
+          <span :class="['inline-flex items-center gap-1.5 py-1.5 px-3 sm:px-4 rounded-full font-semibold text-xs sm:text-sm mb-3 sm:mb-4', isDark ? 'bg-slate-700 text-blue-300' : 'bg-gradient-to-r from-blue-100 to-indigo-100 text-blue-700']">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/></svg>
+            PILIHAN TERBAIK
+          </span>
           <h2 :class="['text-3xl sm:text-4xl md:text-5xl font-black mb-3 sm:mb-4', isDark ? 'text-white' : 'text-slate-900']">Properti Pilihan Premium</h2>
           <p :class="['text-sm sm:text-base md:text-lg font-light px-4 sm:px-0', isDark ? 'text-slate-400' : 'text-slate-600']">Koleksi hunian eksklusif dipilih khusus untuk nilai investasi terbaik dan kualitas hidup premium.</p>
         </div>
@@ -275,8 +283,9 @@
               
               <!-- Status Badges -->
               <div class="absolute top-3 sm:top-4 left-3 sm:left-4 flex flex-col gap-2">
-                <span v-if="property.isNew" class="bg-gradient-to-r from-emerald-500 to-cyan-500 text-white text-xs uppercase tracking-wider font-bold px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-full shadow-lg">
-                  ⭐ Baru
+                <span v-if="property.isNew" class="flex items-center gap-1 bg-gradient-to-r from-emerald-500 to-cyan-500 text-white text-xs uppercase tracking-wider font-bold px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-full shadow-lg max-w-max">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 text-amber-300" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                  Baru
                 </span>
                 <span :class="['text-white text-xs uppercase tracking-wider font-bold px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-full shadow-lg w-max', property.status === 'Dijual' ? 'bg-gradient-to-r from-blue-600 to-indigo-600' : 'bg-gradient-to-r from-amber-600 to-orange-600']">
                   {{ property.status }}
@@ -321,8 +330,9 @@
               </div>
 
               <!-- View Button -->
-              <button :class="['w-full mt-4 sm:mt-5 px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg font-bold transition-all group/btn text-xs sm:text-sm', isDark ? 'bg-slate-600 hover:bg-slate-500 text-blue-300' : 'bg-gradient-to-r from-blue-50 to-indigo-50 hover:from-blue-100 hover:to-indigo-100 text-blue-600']">
-                🔍 Lihat Detail
+              <button :class="['flex items-center justify-center gap-1.5 w-full mt-4 sm:mt-5 px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg font-bold transition-all group/btn text-xs sm:text-sm', isDark ? 'bg-slate-600 hover:bg-slate-500 text-blue-300' : 'bg-gradient-to-r from-blue-50 to-indigo-50 hover:from-blue-100 hover:to-indigo-100 text-blue-600']">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                Lihat Detail
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 sm:h-4 w-3.5 sm:w-4 inline ml-1.5 group-hover/btn:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
                 </svg>
@@ -352,7 +362,10 @@
       </div>
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div class="text-center max-w-3xl mx-auto mb-12 sm:mb-14 md:mb-16">
-          <span :class="['inline-block py-1 px-4 rounded-full font-semibold text-xs sm:text-sm mb-3 sm:mb-4', isDark ? 'bg-slate-700 text-blue-300' : 'bg-blue-100 text-blue-600']">✨ KEUNGGULAN KAMI</span>
+          <span :class="['inline-flex items-center gap-1.5 py-1 px-4 rounded-full font-semibold text-xs sm:text-sm mb-3 sm:mb-4', isDark ? 'bg-slate-700 text-blue-300' : 'bg-blue-100 text-blue-600']">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+            KEUNGGULAN KAMI
+          </span>
           <h2 :class="['text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black mb-3 sm:mb-4', isDark ? 'text-white' : 'text-slate-900']">Mengapa Memilih RumahImpian.id?</h2>
           <p :class="['text-base sm:text-lg md:text-xl font-light leading-relaxed', isDark ? 'text-slate-400' : 'text-slate-600']">Pengalaman mencari dan membeli properti yang paling aman, transparan, dan efisien dengan dukungan tim profesional.</p>
         </div>
@@ -406,73 +419,67 @@
     </section>
 
     <!-- 6. TESTIMONIALS SECTION -->
-    <section :class="['max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 md:py-20 lg:py-24 transition-colors duration-500', isDark ? 'bg-slate-900' : 'bg-white']">
-      <div class="text-center max-w-3xl mx-auto mb-12 sm:mb-14 md:mb-16">
-        <span :class="['inline-block py-1 px-4 rounded-full font-semibold text-xs sm:text-sm mb-3 sm:mb-4', isDark ? 'bg-slate-700 text-blue-300' : 'bg-blue-100 text-blue-600']">⭐ KEPUASAN PELANGGAN</span>
-        <h2 :class="['text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black mb-3 sm:mb-4', isDark ? 'text-white' : 'text-slate-900']">Cerita Sukses dari Ribuan Pelanggan</h2>
-        <p :class="['text-base sm:text-lg md:text-xl font-light leading-relaxed', isDark ? 'text-slate-400' : 'text-slate-600']">Kepercayaan dari pelanggan kami adalah bukti komitmen terhadap layanan berkualitas terbaik.</p>
-      </div>
-
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 md:gap-6 lg:gap-8">
-        <!-- Testimonial 1 -->
-        <div :class="['p-5 sm:p-6 md:p-7 lg:p-8 rounded-xl sm:rounded-2xl border shadow-md sm:shadow-lg hover:shadow-xl transition-all', isDark ? 'bg-slate-800 border-slate-700 hover:border-blue-400' : 'bg-white border-slate-100 hover:border-blue-300']">
-          <div class="flex items-center mb-4">
-            <div class="flex text-yellow-400">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
-            </div>
-          </div>
-          <p :class="['mb-6 font-light', isDark ? 'text-slate-300' : 'text-slate-700']">"Proses pembelian sangat mudah dan cepat. Tim RumahImpian sangat membantu dalam setiap tahap transaksi. Terima kasih telah mewujudkan impian memiliki rumah!"</p>
-          <div :class="['flex items-center border-t pt-4', isDark ? 'border-slate-700' : 'border-slate-100']">
-            <img src="https://i.pravatar.cc/150?img=1" alt="Customer" class="w-10 sm:w-12 h-10 sm:h-12 rounded-full mr-3">
-            <div>
-              <p :class="['font-bold text-sm sm:text-base', isDark ? 'text-white' : 'text-slate-900']">Budi Santoso</p>
-              <p :class="['text-xs sm:text-sm', isDark ? 'text-slate-500' : 'text-slate-500']">Jakarta, 2024</p>
-            </div>
-          </div>
+    <section :class="['py-16 sm:py-20 md:py-28 transition-colors duration-500', isDark ? 'bg-[#0a0f1e]' : 'bg-[#f8faff]']">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center max-w-3xl mx-auto mb-14 md:mb-18">
+          <span :class="['inline-flex items-center gap-2 py-1.5 px-4 rounded-full font-semibold text-xs uppercase tracking-widest mb-4', isDark ? 'bg-blue-900/50 text-blue-300 border border-blue-700/50' : 'bg-blue-600/10 text-blue-700 border border-blue-200']">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+            Kepuasan Pelanggan
+          </span>
+          <h2 :class="['text-3xl sm:text-4xl md:text-5xl font-extrabold mb-4 tracking-tight', isDark ? 'text-white' : 'text-slate-900']">Cerita Sukses dari <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">Ribuan Pelanggan</span></h2>
+          <p :class="['text-base sm:text-lg font-light leading-relaxed', isDark ? 'text-slate-400' : 'text-slate-500']">Kepercayaan dari pelanggan kami adalah bukti komitmen terhadap layanan berkualitas terbaik.</p>
         </div>
 
-        <!-- Testimonial 2 -->
-        <div :class="['p-5 sm:p-6 md:p-7 lg:p-8 rounded-xl sm:rounded-2xl border shadow-md sm:shadow-lg hover:shadow-xl transition-all', isDark ? 'bg-slate-800 border-slate-700 hover:border-blue-400' : 'bg-white border-slate-100 hover:border-blue-300']">
-          <div class="flex items-center mb-4">
-            <div class="flex text-yellow-400">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 sm:h-5 w-4 sm:w-5 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 sm:h-5 w-4 sm:w-5 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 sm:h-5 w-4 sm:w-5 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 sm:h-5 w-4 sm:w-5 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 sm:h-5 w-4 sm:w-5 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+          <!-- Testimonial 1 -->
+          <div :class="['relative p-7 rounded-2xl border card-hover', isDark ? 'bg-[#0e1729] border-blue-900/40 hover:border-blue-500/50 shadow-xl' : 'bg-white border-slate-200 hover:border-blue-200 shadow-lg hover:shadow-xl']">
+            <!-- Quote Icon -->
+            <div class="absolute top-5 right-6 text-6xl leading-none font-serif font-black opacity-10" :class="isDark ? 'text-blue-400' : 'text-blue-600'">"</div>
+            <div class="flex gap-1 text-amber-400 mb-5">
+              <svg v-for="i in 5" :key="i" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+            </div>
+            <p :class="['mb-6 font-light text-sm leading-relaxed', isDark ? 'text-slate-300' : 'text-slate-600']">"Proses pembelian sangat mudah dan cepat. Tim RumahImpian sangat membantu dalam setiap tahap transaksi. Terima kasih telah mewujudkan impian memiliki rumah!"</p>
+            <div :class="['flex items-center gap-3 border-t pt-5', isDark ? 'border-blue-900/40' : 'border-slate-100']">
+              <img src="https://i.pravatar.cc/150?img=1" alt="Customer" class="w-11 h-11 rounded-full ring-2 ring-blue-500/30">
+              <div>
+                <p :class="['font-bold text-sm', isDark ? 'text-white' : 'text-slate-900']">Budi Santoso</p>
+                <p class="text-xs text-slate-500 mt-0.5">Jakarta · 2024</p>
+              </div>
+              <span class="ml-auto text-[10px] font-bold px-2.5 py-1 rounded-full" :class="isDark ? 'bg-blue-900/50 text-blue-300' : 'bg-blue-50 text-blue-600'">Verified</span>
             </div>
           </div>
-          <p :class="['mb-4 sm:mb-5 md:mb-6 font-light text-sm sm:text-base leading-relaxed', isDark ? 'text-slate-300' : 'text-slate-700']">"Sangat puas dengan layanan properti dari RumahImpian. Pilihan properti lengkap, harga kompetitif, dan konsultasinya sangat helpful."</p>
-          <div :class="['flex items-center border-t pt-4', isDark ? 'border-slate-700' : 'border-slate-100']">
-            <img src="https://i.pravatar.cc/150?img=2" alt="Customer" class="w-10 sm:w-12 h-10 sm:h-12 rounded-full mr-3">
-            <div>
-              <p :class="['font-bold text-sm sm:text-base', isDark ? 'text-white' : 'text-slate-900']">Siti Nurhaliza</p>
-              <p :class="['text-xs sm:text-sm', isDark ? 'text-slate-500' : 'text-slate-500']">Bandung, 2024</p>
-            </div>
-          </div>
-        </div>
 
-        <!-- Testimonial 3 -->
-        <div :class="['p-5 sm:p-6 md:p-7 lg:p-8 rounded-xl sm:rounded-2xl border shadow-md sm:shadow-lg hover:shadow-xl transition-all', isDark ? 'bg-slate-800 border-slate-700 hover:border-blue-400' : 'bg-white border-slate-100 hover:border-blue-300']">
-          <div class="flex items-center mb-3 sm:mb-4">
-            <div class="flex text-yellow-400 gap-0.5 sm:gap-1">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 sm:h-5 w-4 sm:w-5 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 sm:h-5 w-4 sm:w-5 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 sm:h-5 w-4 sm:w-5 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 sm:h-5 w-4 sm:w-5 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 sm:h-5 w-4 sm:w-5 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+          <!-- Testimonial 2 -->
+          <div :class="['relative p-7 rounded-2xl border card-hover', isDark ? 'bg-[#0e1729] border-blue-900/40 hover:border-blue-500/50 shadow-xl' : 'bg-white border-slate-200 hover:border-blue-200 shadow-lg hover:shadow-xl']">
+            <div class="absolute top-5 right-6 text-6xl leading-none font-serif font-black opacity-10" :class="isDark ? 'text-blue-400' : 'text-blue-600'">"</div>
+            <div class="flex gap-1 text-amber-400 mb-5">
+              <svg v-for="i in 5" :key="i" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+            </div>
+            <p :class="['mb-6 font-light text-sm leading-relaxed', isDark ? 'text-slate-300' : 'text-slate-600']">"Sangat puas dengan layanan properti dari RumahImpian. Pilihan properti lengkap, harga kompetitif, dan konsultasinya sangat helpful."</p>
+            <div :class="['flex items-center gap-3 border-t pt-5', isDark ? 'border-blue-900/40' : 'border-slate-100']">
+              <img src="https://i.pravatar.cc/150?img=2" alt="Customer" class="w-11 h-11 rounded-full ring-2 ring-emerald-500/30">
+              <div>
+                <p :class="['font-bold text-sm', isDark ? 'text-white' : 'text-slate-900']">Siti Nurhaliza</p>
+                <p class="text-xs text-slate-500 mt-0.5">Bandung · 2024</p>
+              </div>
+              <span class="ml-auto text-[10px] font-bold px-2.5 py-1 rounded-full" :class="isDark ? 'bg-emerald-900/50 text-emerald-300' : 'bg-emerald-50 text-emerald-600'">Verified</span>
             </div>
           </div>
-          <p :class="['mb-4 sm:mb-5 md:mb-6 font-light text-sm sm:text-base leading-relaxed', isDark ? 'text-slate-300' : 'text-slate-700']">"Investasi properti saya berkembang pesat setelah membeli melalui RumahImpian. Kepercayaan dan transparansi mereka luar biasa!"</p>
-          <div :class="['flex items-center border-t pt-4', isDark ? 'border-slate-700' : 'border-slate-100']">
-            <img src="https://i.pravatar.cc/150?img=3" alt="Customer" class="w-10 sm:w-12 h-10 sm:h-12 rounded-full mr-3">
-            <div>
-              <p :class="['font-bold text-sm sm:text-base', isDark ? 'text-white' : 'text-slate-900']">Ahmad Wijaya</p>
-              <p :class="['text-xs sm:text-sm', isDark ? 'text-slate-500' : 'text-slate-500']">Surabaya, 2024</p>
+
+          <!-- Testimonial 3 -->
+          <div :class="['relative p-7 rounded-2xl border card-hover', isDark ? 'bg-[#0e1729] border-blue-900/40 hover:border-blue-500/50 shadow-xl' : 'bg-white border-slate-200 hover:border-blue-200 shadow-lg hover:shadow-xl']">
+            <div class="absolute top-5 right-6 text-6xl leading-none font-serif font-black opacity-10" :class="isDark ? 'text-blue-400' : 'text-blue-600'">"</div>
+            <div class="flex gap-1 text-amber-400 mb-5">
+              <svg v-for="i in 5" :key="i" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+            </div>
+            <p :class="['mb-6 font-light text-sm leading-relaxed', isDark ? 'text-slate-300' : 'text-slate-600']">"Investasi properti saya berkembang pesat setelah membeli melalui RumahImpian. Kepercayaan dan transparansi mereka luar biasa!"</p>
+            <div :class="['flex items-center gap-3 border-t pt-5', isDark ? 'border-blue-900/40' : 'border-slate-100']">
+              <img src="https://i.pravatar.cc/150?img=3" alt="Customer" class="w-11 h-11 rounded-full ring-2 ring-purple-500/30">
+              <div>
+                <p :class="['font-bold text-sm', isDark ? 'text-white' : 'text-slate-900']">Ahmad Wijaya</p>
+                <p class="text-xs text-slate-500 mt-0.5">Surabaya · 2024</p>
+              </div>
+              <span class="ml-auto text-[10px] font-bold px-2.5 py-1 rounded-full" :class="isDark ? 'bg-purple-900/50 text-purple-300' : 'bg-purple-50 text-purple-600'">Verified</span>
             </div>
           </div>
         </div>
@@ -504,7 +511,10 @@
     <section :class="['py-12 sm:py-16 md:py-20 lg:py-24 border-t transition-colors duration-500', isDark ? 'bg-slate-800 border-slate-700' : 'bg-white border-slate-100']">
       <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center max-w-3xl mx-auto mb-12 sm:mb-14 md:mb-16">
-          <span :class="['inline-block py-1 px-4 rounded-full font-semibold text-xs sm:text-sm mb-3 sm:mb-4', isDark ? 'bg-slate-700 text-purple-300' : 'bg-purple-100 text-purple-600']">❓ FAQ</span>
+          <span :class="['inline-flex items-center gap-1.5 py-1 px-4 rounded-full font-semibold text-xs sm:text-sm mb-3 sm:mb-4', isDark ? 'bg-slate-700 text-purple-300' : 'bg-purple-100 text-purple-600']">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            FAQ
+          </span>
           <h2 :class="['text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black mb-3 sm:mb-4', isDark ? 'text-white' : 'text-slate-900']">Pertanyaan yang Sering Diajukan</h2>
           <p :class="['text-base sm:text-lg md:text-xl font-light leading-relaxed', isDark ? 'text-slate-400' : 'text-slate-600']">Temukan jawaban atas pertanyaan umum tentang layanan dan properti kami.</p>
         </div>
@@ -538,11 +548,15 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 md:gap-10 lg:gap-12 mb-8 sm:mb-10 md:mb-12">
           <!-- About -->
           <div>
-            <div class="text-lg sm:text-lxl md:text-2xl font-black flex items-center gap-2 mb-3 sm:mb-4">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 sm:h-7 w-6 sm:w-7 text-blue-400" viewBox="0 0 20 20" fill="currentColor">
-                <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
-              </svg>
-              <span class="text-base sm:text-lg">RumahImpian<span class="text-blue-400">.id</span></span>
+            <div class="flex items-center gap-2 mb-3 sm:mb-4 transition-transform duration-300 hover:scale-[1.02]">
+              <div class="flex items-center justify-center h-8 w-8 sm:h-10 sm:w-10 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 shadow-lg shadow-blue-500/20">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5 text-white" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M11.47 3.84a1 1 0 011.06 0l8.99 5.83a1 1 0 01.37 1.35l-.01.02a1 1 0 01-1.35.37L20 10.95V20a2 2 0 01-2 2h-4a1 1 0 01-1-1v-5h-2v5a1 1 0 01-1 1H6a2 2 0 01-2-2v-9.05l-.53.46a1 1 0 01-1.35-.37l-.01-.02a1 1 0 01.37-1.35l8.99-5.83z" />
+                </svg>
+              </div>
+              <span class="text-lg sm:text-xl md:text-2xl font-black tracking-tight text-white">
+                Rumah<span class="text-blue-400">Impian</span>
+              </span>
             </div>
             <p class="text-slate-400 font-light mb-3 sm:mb-4 text-xs sm:text-sm md:text-base leading-relaxed">Platform properti terpercaya dengan 150KB+ listing dan jutaan pengguna aktif di seluruh Indonesia.</p>
             <div class="flex gap-2 sm:gap-3">
@@ -587,15 +601,15 @@
             <h4 class="font-bold text-base sm:text-lg mb-4 sm:mb-6">Hubungi Kami</h4>
             <ul class="space-y-2 sm:space-y-4 text-slate-400 font-light text-xs sm:text-sm">
               <li class="flex gap-2 sm:gap-3">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 sm:h-5 w-4 sm:w-5 text-blue-400 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 24 24"><path d="M20.894 13.553a1.001 1.001 0 0 0-.892 1.662c1.138 2.652 1.611 5.707.321 8.957-1.272 3.21-4.59 5.478-8.256 5.478-.866 0-1.731-.129-2.588-.39-1.487-.457-2.887-.457-4.374 0-.932.286-1.917.435-2.905.435C2.712 30 0 27.288 0 24s2.712-6 6-6c.988 0 1.973.149 2.905.435 1.487.457 2.887.457 4.374 0 3.663-1.124 7.236.843 8.662 4.118zM6 20c-2.206 0-4 1.794-4 4s1.794 4 4 4 4-1.794 4-4-1.794-4-4-4z" /></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 sm:h-5 w-4 sm:w-5 text-blue-400 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
                 <span>+62 812 345 678</span>
               </li>
               <li class="flex gap-2 sm:gap-3">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 sm:h-5 w-4 sm:w-5 text-green-400 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.67-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.076 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421-7.403h-.004a9.87 9.87 0 00-9.746 9.798c0 2.734.731 5.4 2.124 7.75L1.235 24l8.242-2.163c2.262 1.232 4.81 1.884 7.519 1.884 9.868 0 17.885-8.017 17.885-17.885 0-4.767-1.855-9.248-5.23-12.62-3.376-3.374-7.858-5.231-12.623-5.231z"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 sm:h-5 w-4 sm:w-5 text-green-400 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z" /></svg>
                 <span>+62 812 345 678</span>
               </li>
               <li class="flex gap-2 sm:gap-3">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 sm:h-5 w-4 sm:w-5 text-blue-300 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 sm:h-5 w-4 sm:w-5 text-blue-300 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
                 <span>info@rumahimpian.id</span>
               </li>
             </ul>
@@ -604,7 +618,7 @@
 
         <div class="border-t border-slate-800 pt-6 sm:pt-8">
           <div class="flex flex-col sm:flex-row justify-between items-center gap-4 sm:gap-6">
-            <p class="text-slate-400 font-light text-center sm:text-left text-xs sm:text-sm">&copy; 2024 RumahImpian.id - Semua Hak Cipta Dilindungi. Platform Properti Terpercaya Indonesia.</p>
+            <p class="text-slate-400 font-light text-center sm:text-left text-xs sm:text-sm">&copy; 2025 GriyaKetapang.id — Perumahan Premium di Ketapang, Banyuwangi, Jawa Timur. Semua Hak Cipta Dilindungi.</p>
             <div class="flex gap-4 sm:gap-6 text-slate-400 font-light text-xs sm:text-sm">
               <a href="#" class="hover:text-blue-400 transition-colors">Kebijakan Privasi</a>
               <a href="#" class="hover:text-blue-400 transition-colors">Syarat Layanan</a>
@@ -626,8 +640,12 @@
         <!-- Modal Header with Image -->
         <div class="relative h-48 sm:h-64 md:h-80 lg:h-96">
           <img :src="selectedProperty.image" class="w-full h-full object-cover rounded-t-2xl sm:rounded-t-3xl" />
-          
-          <!-- Close Button -->
+
+          <!-- Back / Close Buttons -->
+          <button @click="closeModal" class="absolute top-3 sm:top-4 md:top-6 left-3 sm:left-4 md:left-6 bg-white/90 hover:bg-white text-slate-800 rounded-full px-4 py-2 shadow-xl transition-all z-10 flex items-center gap-2 font-semibold text-sm backdrop-blur-sm">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+            Kembali
+          </button>
           <button @click="closeModal" class="absolute top-3 sm:top-4 md:top-6 right-3 sm:right-4 md:right-6 bg-white hover:bg-slate-100 text-slate-900 rounded-full p-2 sm:p-3 shadow-xl transition-all z-10">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 sm:h-6 w-5 sm:w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
           </button>
@@ -635,7 +653,10 @@
           <!-- Status Badges -->
           <div class="absolute bottom-3 sm:bottom-4 md:bottom-6 left-3 sm:left-4 md:left-6 flex gap-1 sm:gap-2 flex-wrap">
             <span class="bg-blue-600 text-white text-xs uppercase font-bold px-3 sm:px-4 py-1.5 sm:py-2 rounded-full">{{ selectedProperty.status }}</span>
-            <span v-if="selectedProperty.isNew" class="bg-emerald-500 text-white text-xs uppercase font-bold px-3 sm:px-4 py-1.5 sm:py-2 rounded-full">⭐ Proyek Baru</span>
+            <span v-if="selectedProperty.isNew" class="flex items-center gap-1 bg-emerald-500 text-white text-xs uppercase font-bold px-3 sm:px-4 py-1.5 sm:py-2 rounded-full shadow-lg">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 text-amber-300" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+              Proyek Baru
+            </span>
           </div>
         </div>
 
@@ -675,7 +696,10 @@
               
               <!-- Property Specs -->
               <div>
-                <h3 class="text-lg sm:text-xl md:text-2xl font-black text-slate-900 mb-4 sm:mb-6">📊 Spesifikasi Properti</h3>
+                <h3 class="flex items-center gap-2 text-lg sm:text-xl md:text-2xl font-black text-slate-900 mb-4 sm:mb-6">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+                  Spesifikasi Properti
+                </h3>
                 <div class="grid grid-cols-3 gap-2 sm:gap-4 bg-slate-50 p-4 sm:p-6 rounded-xl sm:rounded-2xl border border-slate-200">
                   <div class="text-center">
                     <div class="text-slate-500 text-xs sm:text-sm font-bold mb-2">KAMAR TIDUR</div>
@@ -699,7 +723,10 @@
 
               <!-- Description -->
               <div>
-                <h3 class="text-lg sm:text-xl md:text-2xl font-black text-slate-900 mb-3 sm:mb-4">📝 Deskripsi Properti</h3>
+                <h3 class="flex items-center gap-2 text-lg sm:text-xl md:text-2xl font-black text-slate-900 mb-3 sm:mb-4">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+                  Deskripsi Properti
+                </h3>
                 <p class="text-slate-700 font-light leading-relaxed text-sm sm:text-base md:text-lg">
                   {{ selectedProperty.description }}
                 </p>
@@ -707,30 +734,33 @@
 
               <!-- Amenities -->
               <div>
-                <h3 class="text-lg sm:text-xl md:text-2xl font-black text-slate-900 mb-3 sm:mb-4">🏗️ Fasilitas & Amenitas</h3>
+                <h3 class="flex items-center gap-2 text-lg sm:text-xl md:text-2xl font-black text-slate-900 mb-3 sm:mb-4">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m3-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+                  Fasilitas & Amenitas
+                </h3>
                 <div class="grid grid-cols-2 md:grid-cols-3 gap-2 sm:gap-3 md:gap-4">
-                  <div class="flex items-center gap-2 sm:gap-3 p-3 sm:p-4 bg-blue-50 rounded-lg text-xs sm:text-sm">
-                    <span class="text-xl sm:text-2xl">🏊</span>
+                  <div class="flex items-center gap-2 sm:gap-3 p-3 sm:p-4 bg-blue-50 rounded-lg text-xs sm:text-sm hover:bg-blue-100 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/></svg>
                     <span class="font-medium text-slate-700">Kolam Renang</span>
                   </div>
-                  <div class="flex items-center gap-2 sm:gap-3 p-3 sm:p-4 bg-blue-50 rounded-lg text-xs sm:text-sm">
-                    <span class="text-xl sm:text-2xl">🏋️</span>
+                  <div class="flex items-center gap-2 sm:gap-3 p-3 sm:p-4 bg-blue-50 rounded-lg text-xs sm:text-sm hover:bg-blue-100 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-purple-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/></svg>
                     <span class="font-medium text-slate-700">Gym Center</span>
                   </div>
-                  <div class="flex items-center gap-2 sm:gap-3 p-3 sm:p-4 bg-blue-50 rounded-lg text-xs sm:text-sm">
-                    <span class="text-xl sm:text-2xl">🚗</span>
+                  <div class="flex items-center gap-2 sm:gap-3 p-3 sm:p-4 bg-blue-50 rounded-lg text-xs sm:text-sm hover:bg-blue-100 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-slate-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"/></svg>
                     <span class="font-medium text-slate-700">Parkir Luas</span>
                   </div>
-                  <div class="flex items-center gap-2 sm:gap-3 p-3 sm:p-4 bg-blue-50 rounded-lg text-xs sm:text-sm">
-                    <span class="text-xl sm:text-2xl">🛡️</span>
+                  <div class="flex items-center gap-2 sm:gap-3 p-3 sm:p-4 bg-blue-50 rounded-lg text-xs sm:text-sm hover:bg-blue-100 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
                     <span class="font-medium text-slate-700">Keamanan 24/7</span>
                   </div>
-                  <div class="flex items-center gap-2 sm:gap-3 p-3 sm:p-4 bg-blue-50 rounded-lg text-xs sm:text-sm">
-                    <span class="text-xl sm:text-2xl">🌳</span>
+                  <div class="flex items-center gap-2 sm:gap-3 p-3 sm:p-4 bg-blue-50 rounded-lg text-xs sm:text-sm hover:bg-blue-100 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/></svg>
                     <span class="font-medium text-slate-700">Taman Luas</span>
                   </div>
-                  <div class="flex items-center gap-2 sm:gap-3 p-3 sm:p-4 bg-blue-50 rounded-lg text-xs sm:text-sm">
-                    <span class="text-xl sm:text-2xl">👶</span>
+                  <div class="flex items-center gap-2 sm:gap-3 p-3 sm:p-4 bg-blue-50 rounded-lg text-xs sm:text-sm hover:bg-blue-100 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-orange-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                     <span class="font-medium text-slate-700">Playground</span>
                   </div>
                 </div>
@@ -742,7 +772,10 @@
             <div class="lg:col-span-1">
               <!-- Agent Card -->
               <div class="sticky top-4 sm:top-6 lg:top-8 bg-white border-2 border-slate-200 rounded-xl sm:rounded-2xl p-4 sm:p-6 md:p-8 shadow-xl">
-                <h3 class="font-black text-base sm:text-lg text-slate-900 mb-4 sm:mb-6">👤 Agen Properti</h3>
+                <h3 class="flex items-center gap-2 font-black text-base sm:text-lg text-slate-900 mb-4 sm:mb-6">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+                  Agen Properti
+                </h3>
                 
                 <div class="flex flex-col items-center mb-4 sm:mb-6">
                   <img src="https://i.pravatar.cc/150?img=12" alt="Agen" class="w-20 sm:w-24 h-20 sm:h-24 rounded-full border-4 border-blue-200 mb-3 sm:mb-4">
@@ -752,7 +785,9 @@
 
                 <div class="space-y-2 mb-4 sm:mb-6 pb-4 sm:pb-6 border-b border-slate-200">
                   <div class="flex items-center gap-2 text-slate-700 text-xs sm:text-sm">
-                    <span class="text-lg sm:text-xl">⭐⭐⭐⭐⭐</span>
+                    <div class="flex text-amber-400">
+                      <svg v-for="i in 5" :key="i" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                    </div>
                     <span class="font-medium">4.9/5 (500+ review)</span>
                   </div>
                   <p class="text-xs sm:text-sm text-slate-600">Responsif, profesional, dan terpercaya</p>
@@ -781,7 +816,10 @@
 
                 <!-- Info Box -->
                 <div class="mt-4 sm:mt-6 pt-4 sm:pt-6 border-t border-slate-200 text-xs sm:text-sm text-slate-600 font-light">
-                  <p class="mb-1 sm:mb-2">💡 <strong>Gratis konsultasi</strong> tentang pembiayaan KPR dan proses jual-beli.</p>
+                  <p class="flex items-start gap-2 mb-1 sm:mb-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-amber-500 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                    <span><strong>Gratis konsultasi</strong> tentang pembiayaan KPR dan proses jual-beli.</span>
+                  </p>
                 </div>
               </div>
             </div>
@@ -795,13 +833,15 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
+import ClusterProgress from './components/ClusterProgress.vue'
 
 const isScrolled = ref(false)
 const isDark = ref(false)
 const activeTab = ref('Beli')
 const selectedProperty = ref(null)
 const activeFaq = ref(null)
+const showCluster = ref(false)
 
 // Dark mode toggle
 const toggleDarkMode = () => {
