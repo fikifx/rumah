@@ -632,7 +632,7 @@
     <!-- MODAL DETAIL PROPERTI - Enhanced Version -->
     <div 
       v-if="selectedProperty" 
-      class="fixed inset-0 z-[100] flex items-center justify-center p-3 sm:p-4 bg-slate-900/70 backdrop-blur-sm transition-opacity overflow-y-auto"
+      class="fixed inset-0 z-[100] flex items-start justify-center p-3 sm:p-4 bg-slate-900/70 backdrop-blur-sm transition-opacity overflow-y-auto"
       @click.self="closeModal"
     >
       <div class="bg-white rounded-2xl sm:rounded-3xl w-full max-w-6xl shadow-2xl animate-in fade-in zoom-in duration-300 my-6 sm:my-8">
