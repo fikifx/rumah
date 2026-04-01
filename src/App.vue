@@ -66,14 +66,94 @@
             </svg>
           </button>
           
-          <button class="p-2 rounded-lg transition-colors" :class="[isScrolled ? 'text-slate-900 hover:bg-slate-100' : 'text-white hover:bg-white/10']">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <button @click="mobileMenuOpen = !mobileMenuOpen" class="p-2 rounded-lg transition-colors" :class="[isScrolled ? 'text-slate-900 hover:bg-slate-100' : 'text-white hover:bg-white/10']">
+            <svg v-if="!mobileMenuOpen" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+            <svg v-else xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
             </svg>
           </button>
         </div>
       </div>
     </nav>
+
+    <!-- MOBILE DRAWER MENU -->
+    <!-- Backdrop -->
+    <transition name="fade">
+      <div
+        v-if="mobileMenuOpen"
+        class="fixed inset-0 z-[80] bg-black/50 backdrop-blur-sm lg:hidden"
+        @click="closeMobileMenu"
+      ></div>
+    </transition>
+
+    <!-- Drawer Panel -->
+    <transition name="slide-right">
+      <div
+        v-if="mobileMenuOpen"
+        :class="['fixed top-0 right-0 h-full w-72 z-[90] shadow-2xl flex flex-col lg:hidden', isDark ? 'bg-[#0a0f1e] border-l border-blue-900/40' : 'bg-white border-l border-slate-200']"
+      >
+        <!-- Drawer Header -->
+        <div :class="['flex items-center justify-between px-5 py-5 border-b', isDark ? 'border-blue-900/30' : 'border-slate-100']">
+          <div class="flex items-center gap-2">
+            <div class="h-8 w-8 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M11.47 3.84a1 1 0 011.06 0l8.99 5.83a1 1 0 01.37 1.35l-.01.02a1 1 0 01-1.35.37L20 10.95V20a2 2 0 01-2 2h-4a1 1 0 01-1-1v-5h-2v5a1 1 0 01-1 1H6a2 2 0 01-2-2v-9.05l-.53.46a1 1 0 01-1.35-.37l-.01-.02a1 1 0 01.37-1.35l8.99-5.83z" />
+              </svg>
+            </div>
+            <span :class="['text-lg font-black', isDark ? 'text-white' : 'text-slate-900']">Griya<span class="text-blue-500">Ketapang</span></span>
+          </div>
+          <button @click="closeMobileMenu" :class="['p-2 rounded-xl transition-colors', isDark ? 'hover:bg-slate-800 text-slate-400' : 'hover:bg-slate-100 text-slate-500']">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+
+        <!-- Nav Links -->
+        <nav class="flex-1 overflow-y-auto px-4 py-6 space-y-1">
+          <a href="#jual" @click="closeMobileMenu" :class="['flex items-center gap-3 px-4 py-3.5 rounded-xl font-semibold transition-all', isDark ? 'text-slate-300 hover:bg-blue-900/30 hover:text-blue-300' : 'text-slate-700 hover:bg-blue-50 hover:text-blue-600']">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+            Beli Properti
+          </a>
+          <a href="#sewa" @click="closeMobileMenu" :class="['flex items-center gap-3 px-4 py-3.5 rounded-xl font-semibold transition-all', isDark ? 'text-slate-300 hover:bg-blue-900/30 hover:text-blue-300' : 'text-slate-700 hover:bg-blue-50 hover:text-blue-600']">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/></svg>
+            Sewa Properti
+          </a>
+          <a href="#baru" @click="closeMobileMenu" :class="['flex items-center gap-3 px-4 py-3.5 rounded-xl font-semibold transition-all', isDark ? 'text-slate-300 hover:bg-blue-900/30 hover:text-blue-300' : 'text-slate-700 hover:bg-blue-50 hover:text-blue-600']">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/></svg>
+            Proyek Baru
+          </a>
+          <button @click="showCluster = true; closeMobileMenu()" :class="['w-full flex items-center gap-3 px-4 py-3.5 rounded-xl font-semibold transition-all', isDark ? 'text-slate-300 hover:bg-blue-900/30 hover:text-blue-300' : 'text-slate-700 hover:bg-blue-50 hover:text-blue-600']">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/></svg>
+            Progress Unit
+          </button>
+
+          <!-- Divider -->
+          <div :class="['my-4 border-t', isDark ? 'border-blue-900/30' : 'border-slate-100']"></div>
+
+          <!-- Dark Mode Toggle -->
+          <button @click="toggleDarkMode" :class="['w-full flex items-center gap-3 px-4 py-3.5 rounded-xl font-semibold transition-all', isDark ? 'text-amber-300 hover:bg-amber-900/20' : 'text-slate-700 hover:bg-amber-50']">
+            <svg v-if="!isDark" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+            </svg>
+            <svg v-else xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-amber-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+            </svg>
+            {{ isDark ? 'Mode Terang' : 'Mode Gelap' }}
+          </button>
+        </nav>
+
+        <!-- CTA Footer -->
+        <div :class="['px-4 py-5 border-t', isDark ? 'border-blue-900/30' : 'border-slate-100']">          
+          <button @click="showCluster = true; closeMobileMenu()" class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-bold py-3.5 rounded-xl shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50 transition-all">
+            Masuk / Daftar
+          </button>
+        </div>
+      </div>
+    </transition>
+
 
     <!-- 2. HERO SECTION -->
     <header class="relative w-full min-h-screen pt-20 sm:pt-24 lg:pt-32 pb-10 sm:pb-12 flex items-center justify-center overflow-hidden">
@@ -842,6 +922,9 @@ const activeTab = ref('Beli')
 const selectedProperty = ref(null)
 const activeFaq = ref(null)
 const showCluster = ref(false)
+const mobileMenuOpen = ref(false)
+
+const closeMobileMenu = () => { mobileMenuOpen.value = false }
 
 // Dark mode toggle
 const toggleDarkMode = () => {

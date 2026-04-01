@@ -12,3 +12,23 @@ html, body {
   scroll-behavior: smooth;
   background-color: #f9fafb;
 }
+
+/* Mobile drawer transition */
+.slide-right-enter-active,
+.slide-right-leave-active {
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.slide-right-enter-from,
+.slide-right-leave-to {
+  transform: translateX(100%);
+}
+
+/* Backdrop fade transition */
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.25s ease;
+}
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
