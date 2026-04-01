@@ -861,7 +861,8 @@ onMounted(() => {
   // Rest of onMounted...
 })
 
-const heroImage = '/image/desain-rumah-kecil-sederhana-kontemporer.jpg'
+const base = import.meta.env.BASE_URL
+const heroImage = base + 'image/desain-rumah-kecil-sederhana-kontemporer.jpg'
 
 // FAQ Data
 const faqs = ref([
@@ -902,7 +903,7 @@ const featuredProperties = ref([
     baths: 2,
     area: 90,
     isNew: true,
-    image: '/image/desain-rumah-kecil-sederhana-kontemporer.jpg',
+    image: base + 'image/desain-rumah-kecil-sederhana-kontemporer.jpg',
     description: 'Rumah cluster cantik di kawasan premium Bintaro dengan sistem keamanan 24 jam. Desain kontemporer dengan sirkulasi udara optimal dan pencahayaan alami yang melimpah. Sangat dekat dengan stasiun KRL, tol, dan pusat perbelanjaan ternama. Ideal untuk keluarga modern yang menginginkan gaya hidup berkualitas di lokasi strategis.'
   },
   {
@@ -914,7 +915,7 @@ const featuredProperties = ref([
     baths: 1,
     area: 72,
     isNew: false,
-    image: '/image/gambar-rumah-sederhana-kecil-skandinavian.jpg',
+    image: base + 'image/gambar-rumah-sederhana-kecil-skandinavian.jpg',
     description: 'Menikmati udara segar pegunungan dari halaman belakang rumah Anda sendiri. Desain skandinavian yang cozy dilengkapi lantai kayu vinyl berkualitas dan ceiling tinggi membuatnya terasa sangat luas. Lokasi tenang dengan tetangga yang ramah dan akses ke berbagai fasilitas umum.'
   },
   {
@@ -926,7 +927,7 @@ const featuredProperties = ref([
     baths: 3,
     area: 120,
     isNew: false,
-    image: '/image/gambar-rumah-sederhana-kecil-desain-industrial.jpg',
+    image: base + 'image/gambar-rumah-sederhana-kecil-desain-industrial.jpg',
     description: 'Villa bergaya industrial yang aesthetic. Cocok untuk digital nomad atau keluarga ekspatriat. Memiliki kolam renang pribadi kecil, dinding ekspos batu bata, dan jendela kaca lebar menghadap persawahan. Lokasi strategis di area yang berkembang dengan berbagai amenitas pendukung.'
   },
   {
@@ -938,7 +939,7 @@ const featuredProperties = ref([
     baths: 1,
     area: 60,
     isNew: true,
-    image: '/image/desain-rumah-kecil-atap-miring.jpg',
+    image: base + 'image/desain-rumah-kecil-atap-miring.jpg',
     description: 'Solusi cerdas hunian modern bagi milenial. Fasad atap miring unik yang sedang trend dengan interior minimalis fungsional. Lokasi bebas banjir dan sangat strategis, hanya 10 menit dari kawasan kampus UI dan pusat perbelanjaan.'
   },
   {
@@ -950,7 +951,7 @@ const featuredProperties = ref([
     baths: 2,
     area: 85,
     isNew: true,
-    image: '/image/gambar-rumah-sederhana-kecil-modern-minimalis.jpg',
+    image: base + 'image/gambar-rumah-sederhana-kecil-modern-minimalis.jpg',
     description: 'Hunian eksklusif 2 lantai di jantung BSD City. Dilengkapi dengan smart home system lengkap, solar water heater, dan material bangunan berstandar internasional. Lokasi premium dekat dengan stasiun, mall, dan berbagai fasilitas bisnis.'
   },
   {
@@ -962,7 +963,7 @@ const featuredProperties = ref([
     baths: 1,
     area: 50,
     isNew: false,
-    image: '/image/rumah-kecil-sederhana-minimalis.jpg',
+    image: base + 'image/rumah-kecil-sederhana-minimalis.jpg',
     description: 'Pilihan tepat untuk keluarga muda atau pasangan baru. Lingkungan yang sudah terbentuk, ramah anak, dan terdapat fasilitas taman bermain dalam kompleks. Legalitas SHM sudah pecah, sertifikat lengkap dan aman untuk investasi.'
   },
   {
@@ -974,7 +975,7 @@ const featuredProperties = ref([
     baths: 3,
     area: 125,
     isNew: true,
-    image: '/image/rumah-kecil-sederhana-e1723023921680.jpg',
+    image: base + 'image/rumah-kecil-sederhana-e1723023921680.jpg',
     description: 'Properti idaman berukuran luas dengan layout optimal. Master bedroom luas, ruang tamu berkonsep open space, lengkap dengan dapur kotor dan dapur bersih. Free AC di setiap kamar khusus promo bulan ini. Lokasi super strategis dengan akses mudah ke berbagai tempat.'
   },
   {
@@ -986,7 +987,7 @@ const featuredProperties = ref([
     baths: 2,
     area: 145,
     isNew: true,
-    image: '/image/desain-rumah-kecil-sederhana-kontemporer.jpg',
+    image: base + 'image/desain-rumah-kecil-sederhana-kontemporer.jpg',
     description: 'Unit apartemen premium dengan pemandangan kota yang menakjubkan. Furnished mewah dengan smart home technology, gym, spa, dan berbagai fasilitas eksklusif. Lokasi prestisius di kawasan bisnis dan lifestyle terbaik Jakarta.'
   }
 ])
